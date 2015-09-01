@@ -28,13 +28,23 @@ shinyServer(function(input, output) {
       }
     })
   
-  controls <- reactive(input$controlSamples)
+  controls <- reactive(as.character(input$controlSamples))
   
   source("./helper.R")
   
-  output$densityPlot <- renderPlot(DensityPlot(dat()))
+  output$densityPlot <- renderPlot({
+    
+    DensityPlot(dat(), cutoff = input$cutoff)
+    
+    })
   
-  output$PCAPlot <- renderPlot(PCAPlot(dat(), controls()))
+  filter <- reactive({
+    geneMeans <- rowMeans(dat())
+    qt <- quantile(geneMeans, as.numeric(input$cutoff)/100)
+    return(geneMeans > qt)
+  })
+  
+  output$PCAPlot <- renderPlot(PCAPlot(dat(), controls(), filter()))
   
   
   

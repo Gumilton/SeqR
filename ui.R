@@ -45,6 +45,9 @@ shinyUI(navbarPage("SeqR!",
                    
                    
                    tabPanel("EDA",
-                            shiny::plotOutput('densityPlot')
+                            sliderInput("cutoff", "Cutoff %:",
+                                        min = 0, max = 100, value = 20, step = 1),
+                            shiny::plotOutput('densityPlot'),
+                            shiny::plotOutput('PCAPlot')
                    )
 ))
