@@ -36,7 +36,7 @@ DensityPlot <- function(data.frame, cutoff, main=""){
   legend("topright", samples, fill = color)
   
   abline(v = qt)
-  text(qt+1, 0.2, paste("<", cutoff, "% Filter"))
+  text(qt + xlim_vec[2]/10, ylim_vec[2]/8, paste("<", cutoff, "% Filter"))
 }
 
 
@@ -83,7 +83,20 @@ PCAPlot <- function( data, controls, filter) {
 }
 
 
-
+libSizePlot <- function(data) {
+  
+  suffix <- ""
+  if(max(data) > 10e5) {
+    data <- (data)/10e6
+    suffix <- "(Million)"
+  }
+  
+  
+  barplot(colSums(data),las=2, 
+          names.arg = colnames(data),
+          cex.names =  1,
+          main= paste("Library Size", suffix))
+}
 
 
 

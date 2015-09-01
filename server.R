@@ -11,6 +11,7 @@ shinyServer(function(input, output) {
     temp <- read.csv(inFile$datapath, header = T, stringsAsFactors = F)
     rownames(temp) <- make.unique(temp[,1], sep = "_")
     temp <- temp[,-1]
+    temp <- na.omit(temp)
     return(temp)
   })
   
@@ -46,11 +47,24 @@ shinyServer(function(input, output) {
   
   output$PCAPlot <- renderPlot(PCAPlot(dat(), controls(), filter()))
   
+  output$LibSizePlot <- renderPlot(libSizePlot(dat()))
+  
+  
+  source("./limma.R")
+  source("./limma_server.R", local=TRUE)
   
   
   
-  
-  
+  #   source("./deseq.R")
+  #   source("./deseq2.R")
+  #   res_deseq <- reactive(deseq(dat(), controls(), filter()))
+  #   res_deseq2 <- reactive(deseq2(dat(), controls()))
   
   
 })
+
+
+
+
+
+

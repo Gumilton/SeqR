@@ -40,14 +40,31 @@ shinyUI(navbarPage("SeqR!",
                               
                               column(width=12,
                                      data_preview)
-                            )
-                   ),
+                              )
+                            ),
                    
                    
                    tabPanel("EDA",
-                            sliderInput("cutoff", "Cutoff %:",
-                                        min = 0, max = 100, value = 20, step = 1),
-                            shiny::plotOutput('densityPlot'),
-                            shiny::plotOutput('PCAPlot')
+                            fluidRow(
+                              column(width=12, p('')),
+                              column(6, plotOutput('LibSizePlot')),
+                              column(width=10, p('')),
+                              column(4, sliderInput("cutoff", "Cutoff %:",
+                                                    min = 0, max = 100, 
+                                                    value = 20, step = 1)),
+                              column(8, plotOutput('densityPlot')),
+                              column(12, plotOutput('PCAPlot'))
+                              )
+                            ),
+                   
+                   
+                   tabPanel("DE",
+                            fluidRow(
+                              column(width=12, p('')),
+                              column(width=12, dataTableOutput('table_limma')),
+                              column(width=12, plotOutput('figure_voom_limma')),
+                              column(width=12, plotOutput('figure_qt_limma'))
+                              
+                            )
                    )
 ))
