@@ -6,8 +6,8 @@ limma <- function(data, controls, filter) {
   
 
   
-  dge <- DGEList(counts=data[filter,])
-  dge <- calcNormFactors(dge)
+  dge <- edgeR::DGEList(counts=data[filter,])
+  dge <- edgeR::calcNormFactors(dge)
   
   contrast <- factor(! colnames(data) %in% controls, 
                      labels = c("Control","Case"))
@@ -22,25 +22,25 @@ limma <- function(data, controls, filter) {
 limma_fit <- function(limma_ob) {
   dge <- limma_ob$dge
   design <- limma_ob$design
-  v <- voom(dge, design)
+  v <- limma::voom(dge, design)
   
-  fit <- lmFit(v,design)
-  fit <- eBayes(fit)
+  fit <- limma::lmFit(v,design)
+  fit <- limma::eBayes(fit)
   return(fit)
 }
 
 
 limma_de_table <- function(limma_fit,limma_ob) {
   
-  topTable(limma_fit, coef=ncol(limma_ob$design), number = Inf, 
-           adjust.method = 'fdr')
+  limma::topTable(limma_fit, coef=ncol(limma_ob$design),
+                  number = Inf, adjust.method = 'fdr')
   
 }
 
 limma_voom_figure <- function(limma_ob) {
   dge <- limma_ob$dge
   design <- limma_ob$design
-  voom(dge, design, plot = T)
+  limma::voom(dge, design, plot = T)
 }
 
 
