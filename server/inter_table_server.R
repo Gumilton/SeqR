@@ -4,7 +4,7 @@ intersect_table <<- reactive({
   res_inter <- input$interTableMethods
   print(res_inter)
   res_list <- res_list()
-  tab <- data.frame(ID = unlist(c(Reduce(intersect,
+  tab <- data.frame(GeneID = unlist(c(Reduce(intersect,
                                          res_list$up[res_inter]),
                                   Reduce(intersect,
                                          res_list$dn[res_inter]))))
@@ -12,8 +12,8 @@ intersect_table <<- reactive({
   
   raw <- dat()
   colnames(raw) <- paste(colnames(raw), "raw", sep = "_")
-  raw <- cbind(ID = rownames(raw), raw)
-  tab <- merge(tab, raw, by = "ID")
+  raw <- cbind(GeneID = rownames(raw), raw)
+  tab <- merge(tab, raw, by = "GeneID")
   print(nrow(tab))
   
   for(i in res_inter) {
@@ -21,8 +21,8 @@ intersect_table <<- reactive({
       print("LIMMA")
       temp <- limma_de_table_res()
       colnames(temp) <- paste(colnames(temp), "limma", sep = "_")
-      temp <- cbind(ID = rownames(temp), temp)
-      tab <- merge(tab, temp, by = "ID")
+      temp <- cbind(GeneID = rownames(temp), temp)
+      tab <- merge(tab, temp, by = "GeneID")
       print(nrow(tab))
     }
     
@@ -30,7 +30,7 @@ intersect_table <<- reactive({
       print("DESeq")
       temp <- res()
       colnames(temp) <- paste(colnames(temp), "deseq", sep = "_")
-      tab <- merge(tab, temp, by.x = "ID", by.y = "id_deseq")
+      tab <- merge(tab, temp, by.x = "GeneID", by.y = "id_deseq")
       print(nrow(tab))
       
     }
@@ -39,8 +39,8 @@ intersect_table <<- reactive({
       print("DESeq2")
       temp <- as.data.frame(res2())
       colnames(temp) <- paste(colnames(temp), "deseq2", sep = "_")
-      temp <- cbind(ID = rownames(temp), temp)
-      tab <- merge(tab, temp, by = "ID")
+      temp <- cbind(GeneID = rownames(temp), temp)
+      tab <- merge(tab, temp, by = "GeneID")
       print(nrow(tab))
       
     }
