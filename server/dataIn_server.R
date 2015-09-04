@@ -34,6 +34,6 @@ output$showMethodBox <- renderUI({
   checkboxGroupInput('showMethods',
                      'Choose Analysis Methods',
                      methods())
-  })
+})
 
   

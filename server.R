@@ -1,4 +1,5 @@
 library(shiny)
+library(xlsx)
 source("./function/EDA.R")
 source("./function/limma.R")
 source("./function/deseq.R")
@@ -41,6 +42,38 @@ shinyServer(function(input, output) {
       output$figure_UP <- renderPlot(drawVenn(res_list()$up))
       output$figure_DN <- renderPlot(drawVenn(res_list()$dn))
       
+      
+      # methods <- reactive(as.character(input$methods))
+      output$showInterTableBox <<- renderUI({
+        checkboxGroupInput('interTableMethods',
+                           'Choose Analysis Methods',
+                           methods())
+        
+              })
+      
+      
+    })
+    
+    
+    observeEvent(input$showResTable, {
+      source("./server/inter_table_server.R", local=TRUE)
+      
+      output$interTableRes <- renderDataTable(intersect_table())
+      output$downloadExcel <- downloadHandler(
+        filename = function() { paste('summary.csv') },
+        content = function(file) {write.xlsx(intersect_table(), file, row.names = F)}
+      )
+      
+      output$downloadCSV <- downloadHandler(
+        filename = function() { paste('summary.csv') },
+        content = function(file) {write.csv(intersect_table(), file, row.names = F)}
+      )
+      
+      output$downloadTXT <- downloadHandler(
+        filename = function() { paste('summary.csv') },
+        content = function(file) {write.table(intersect_table(), file, row.names = F,
+                                              sep = "\t", quote = F)}
+      )
     })
     
   })

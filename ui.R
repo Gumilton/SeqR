@@ -9,7 +9,7 @@ input_panel <- sidebarPanel(h3("Choose Data File"),
                                          c(Comma=',',
                                            Semicolon=';',
                                            Tab='\t'),
-                                         ','),
+                                         '\t'),
                             radioButtons('quote', 'Quote',
                                          c(None='',
                                            'Double Quote'='"',
@@ -112,9 +112,21 @@ shinyUI(navbarPage("SeqR!",
                                                                     value = .05, step = .001),
                                                         uiOutput('showMethodBox'),
                                                         actionButton("showRes","Show Result"))),
+                                       
+                                       column(width=12, p('')),
                                        column(width=6, plotOutput('figure_UP')),
                                        column(width=6, plotOutput('figure_DN')),
-                                       column(width=12, dataTableOutput(NULL))
+                                       
+                                       column(width=12, p('')),
+                                       column(width = 4,
+                                              wellPanel(h3("Setting"),
+                                                        conditionalPanel('input.showRes',
+                                                                         uiOutput('showInterTableBox'),
+                                                                         actionButton("showResTable","Show Result Table"),
+                                                                         downloadButton('downloadExcel', 'Download as Excel'),
+                                                                         downloadButton('downloadCSV', 'Download as CSV'),
+                                                                         downloadButton('downloadTXT', 'Download as TXT')))),
+                                       column(width=12, dataTableOutput('interTableRes'))
                                      )
                             )
                             

@@ -17,10 +17,9 @@ if("DESeq" %in% methods()) {
   output$figure_MA_deseq <<- renderPlot(DESeq::plotMA(res()))
   output$table_deseq <<- renderDataTable({
     temp <- as.data.frame(res())
-    temp <- cbind(ID= rownames(temp), temp)
     exp <- dat()
     exp <- cbind(ID = rownames(exp), exp)
-    merge(exp, temp, by = "ID")
+    merge(exp, temp, by.x = "ID", by.y = "id")
   })
 }
 

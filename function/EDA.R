@@ -2,7 +2,7 @@ DensityPlot <- function(data.frame, cutoff, main=""){
   samples <- colnames(data.frame)
   if (class(data.frame) == "data.frame") {
     data.frame <- as.matrix(data.frame)}
-  if ( max(data.frame) > 10e5) { data.frame <- log2(data.frame + 1)}
+  if ( max(data.frame) > 10e3) { data.frame <- log2(data.frame + 1)}
   
   geneMeans <- rowMeans(data.frame)
   qt <- quantile(geneMeans, cutoff/100)
