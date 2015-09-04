@@ -1,5 +1,5 @@
 library(DESeq2)
-
+library(BiocParallel)
 
 deseq2 <- function(data, controls, filter) {
   
