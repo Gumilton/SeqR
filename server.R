@@ -3,6 +3,7 @@ source("./function/EDA.R")
 source("./function/limma.R")
 source("./function/deseq.R")
 source("./function/deseq2.R")
+source("./function/overlap.R")
 
 
 shinyServer(function(input, output) {
@@ -37,6 +38,8 @@ shinyServer(function(input, output) {
     
     observeEvent(input$showRes, {
       source("./server/overlap_server.R", local=TRUE)
+      output$figure_UP <- renderPlot(drawVenn(res_list()$up))
+      output$figure_DN <- renderPlot(drawVenn(res_list()$dn))
       
     })
     

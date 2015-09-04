@@ -17,6 +17,10 @@ deseq2 <- function(data, controls, filter) {
                                         colData = info,
                                         design = ~ condition)
   
+  
+  if(Sys.info()["sysname"] == "Windows") {BiocParallel::register(SnowParam())}
+  else {BiocParallel::register(MulticoreParam())}
+  
   dds <- DESeq2::DESeq(dds, parallel = T )
   return(dds)
 }
