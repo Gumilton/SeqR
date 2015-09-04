@@ -15,10 +15,10 @@ input_panel <- sidebarPanel(h3("Choose Data File"),
                                            'Double Quote'='"',
                                            'Single Quote'="'"),
                                          '"'),
-                            fileInput('file1', 'Choose CSV File',
+                            fileInput('file1', 'Choose Data File',
                                       accept=c('text/csv', 
                                                'text/comma-separated-values,text/plain', 
-                                               '.csv')),
+                                               '.csv', '.xlsx')),
                             actionButton("dataIn", "UpLoad!")
                             )
 
