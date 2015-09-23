@@ -18,17 +18,35 @@ deseq2 <- function(data, controls, filter) {
                                         design = ~ condition)
   
   
-  if(Sys.info()["sysname"] == "Windows") {BiocParallel::register(SnowParam())}
-  else {BiocParallel::register(MulticoreParam())}
   
-  dds <- DESeq2::DESeq(dds, parallel = T )
+  
+  if (ncol(dds) > 90) {
+    
+    if(Sys.info()["sysname"] == "Windows") {BiocParallel::register(SnowParam())}
+    
+    else {BiocParallel::register(MulticoreParam())}
+    
+    dds <- DESeq2::DESeq(dds, parallel = T )
+  }
+  
+  else {dds <- DESeq2::DESeq(dds, parallel = F )}
+  
   return(dds)
 }
 
 
 deseq2_de <- function(dds) {
+  if (ncol(dds) > 90) {
+    
+    if(Sys.info()["sysname"] == "Windows") {BiocParallel::register(SnowParam())}
+    
+    else {BiocParallel::register(MulticoreParam())}
+    
+    res <- DESeq2::results(dds, parallel = T)
+  }
   
-  res <- DESeq2::results(dds, parallel = T)
+  else {res <- DESeq2::results(dds, parallel = F)}
+  
   
   return(res)
 }
