@@ -10,9 +10,9 @@ source("./function/overlap.R")
 shinyServer(function(input, output) {
   
   
-
   
   observeEvent(input$dataIn, {
+    
     source("./server/dataIn_server.R", local=TRUE)
     source("./server/EDA_server.R", local=TRUE)
     observeEvent(input$controlSet, {
@@ -59,10 +59,10 @@ shinyServer(function(input, output) {
       source("./server/inter_table_server.R", local=TRUE)
       
       output$interTableRes <- renderDataTable(intersect_table())
-      output$downloadExcel <- downloadHandler(
-        filename = function() { paste('summary.csv') },
-        content = function(file) {write.xlsx(intersect_table(), file, row.names = F)}
-      )
+#       output$downloadExcel <- downloadHandler(
+#         filename = function() { paste('summary.xlsx') },
+#         content = function(file) {write.xlsx(intersect_table(), file, row.names = F)}
+#       )
       
       output$downloadCSV <- downloadHandler(
         filename = function() { paste('summary.csv') },
@@ -70,10 +70,36 @@ shinyServer(function(input, output) {
       )
       
       output$downloadTXT <- downloadHandler(
-        filename = function() { paste('summary.csv') },
+        filename = function() { paste('summary.txt') },
         content = function(file) {write.table(intersect_table(), file, row.names = F,
                                               sep = "\t", quote = F)}
       )
+      
+      
+    })
+    
+    
+    observeEvent(input$goAnalyze, {
+#       source("./server/inter_table_server.R", local=TRUE)
+#       
+#       output$interTableRes <- renderDataTable(intersect_table())
+#       output$downloadExcel <- downloadHandler(
+#         filename = function() { paste('summary.csv') },
+#         content = function(file) {write.xlsx(intersect_table(), file, row.names = F)}
+#       )
+#       
+#       output$downloadCSV <- downloadHandler(
+#         filename = function() { paste('summary.csv') },
+#         content = function(file) {write.csv(intersect_table(), file, row.names = F)}
+#       )
+#       
+#       output$downloadTXT <- downloadHandler(
+#         filename = function() { paste('summary.csv') },
+#         content = function(file) {write.table(intersect_table(), file, row.names = F,
+#                                               sep = "\t", quote = F)}
+#       )
+      
+      
     })
     
   })

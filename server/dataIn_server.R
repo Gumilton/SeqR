@@ -3,8 +3,21 @@ dat <- reactive({
   inFile <- input$file1
   if(is.null(inFile)) return(NULL)
   
-  temp <- read.delim(inFile$datapath, header = T, 
-                     stringsAsFactors = F, sep = input$sep)
+  temp <- tryCatch(
+    {
+      read.delim(inFile$datapath, header = T, 
+                 stringsAsFactors = F, sep = input$sep)
+    },
+    warning = function(cond) {
+      message(cond)
+#       read.xlsx(inFile$datapath, header = T, 
+#                 sheetIndex = 1)
+    }
+  )
+  
+  
+  
+  
   rownames(temp) <- make.unique(temp[,1], sep = "_")
   temp <- temp[,-1]
   temp <- na.omit(temp)
