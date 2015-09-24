@@ -40,30 +40,39 @@ DensityPlot <- function(data.frame, cutoff, main=""){
 }
 
 
-
-
-PCAPlot <- function( data, controls, filter) {
+anaPCA <- function( data, filter) {
   if(length(filter) != 0) {
     data <- data[filter,]
   }
   
   library(svd)
-  library(scales)
   
   svd_data <- svd(data - rowMeans(data))
+  
+  return (svd_data)
+}
+
+PCAPlot_factor <- function( svd_data) {
+  
+  plot((svd_data$d^2/sum(svd_data$d^2))[1:min(10, length(svd_data$d))],
+       xlab="First 10 Principle Components", ylab="% Variance Explained",
+       main="Factor Analysis PCA",pch=19,type="b")
+  
+}
+
+PCAPlot_pca <- function( data, svd_data, controls) {
+  
+  library(scales)
   
   if(length(controls) != 0) {
     colors = alpha(ifelse(colnames(data) %in% controls,"red","blue"), .5)
   }
   else {colors = "black"}
   
-  par(mfrow=c(1,2))
-  plot((svd_data$d^2/sum(svd_data$d^2))[1:min(10, length(svd_data$d))],
-       xlab="First 10 Principle Components", ylab="% Variance Explained",
-       main="Factor Analysis PCA",pch=19,type="b")
-  
+  xlim <- range(c(svd_data$v[,1])) * 1.2
+  ylim <- range(c(svd_data$v[,2])) * 1.2
   plot(svd_data$v[,1],svd_data$v[,2],pch=19, 
-       col=colors,
+       col=colors, xlim = xlim, ylim = ylim,
        
        xlab=paste("Principle Component 1:", 
                   signif((svd_data$d^2/sum(svd_data$d^2))[1]*100,4),
@@ -72,13 +81,11 @@ PCAPlot <- function( data, controls, filter) {
                   signif((svd_data$d^2/sum(svd_data$d^2))[2]*100,4),
                   "%"),
        main="Principle Component Analysis")
+  
   if(length(controls) != 0) {
     legend("bottomleft", legend=c("Controls","Case"),
            col=c("red","blue"),pch=19, bty = "n")
   }
-  
-  # par(p0)
-  
   
 }
 
@@ -98,7 +105,11 @@ libSizePlot <- function(data) {
           main= paste("Library Size", suffix))
 }
 
-
+clusterPlot <- function(data, filter) {
+  
+  
+  
+}
 
 
 

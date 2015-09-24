@@ -5,11 +5,13 @@ source("./function/limma.R")
 source("./function/deseq.R")
 source("./function/deseq2.R")
 source("./function/overlap.R")
-
+library(shinyjs)
 
 shinyServer(function(input, output) {
   
-  
+  output$DAVID_ui <- renderUI({
+    tags$a(href = "#", "DAVID")
+  })
   
   observeEvent(input$dataIn, {
     
@@ -78,27 +80,25 @@ shinyServer(function(input, output) {
       
     })
     
+   
     
     observeEvent(input$goAnalyze, {
-#       source("./server/inter_table_server.R", local=TRUE)
-#       
-#       output$interTableRes <- renderDataTable(intersect_table())
-#       output$downloadExcel <- downloadHandler(
-#         filename = function() { paste('summary.csv') },
-#         content = function(file) {write.xlsx(intersect_table(), file, row.names = F)}
-#       )
-#       
-#       output$downloadCSV <- downloadHandler(
-#         filename = function() { paste('summary.csv') },
-#         content = function(file) {write.csv(intersect_table(), file, row.names = F)}
-#       )
-#       
-#       output$downloadTXT <- downloadHandler(
-#         filename = function() { paste('summary.csv') },
-#         content = function(file) {write.table(intersect_table(), file, row.names = F,
-#                                               sep = "\t", quote = F)}
-#       )
       
+      observeEvent(input$goEnrichr, {
+        
+        genes <- paste(intersect_table()$GeneID, collapse = "\n")
+        js$enrichr(list = genes)
+        
+      })
+      
+      output$DAVID_ui <- renderUI({
+        
+        genes <- paste(intersect_table()$GeneID, collapse = ",")
+        link <- paste0("http://david.abcc.ncifcrf.gov/api.jsp?type=",
+                       input$david_type, "&ids=",genes,"&tool=summary")
+        
+        tags$a(href = link, "DAVID", target = "_blank")
+      })
       
     })
     
