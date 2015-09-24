@@ -1,6 +1,7 @@
 
 library(shiny)
 library(shinyjs)
+library(V8)
 
 source('./ui/panelSets_ui.R', local=TRUE)
 

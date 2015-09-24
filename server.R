@@ -6,6 +6,7 @@ source("./function/deseq.R")
 source("./function/deseq2.R")
 source("./function/overlap.R")
 library(shinyjs)
+library(V8)
 
 shinyServer(function(input, output) {
   
