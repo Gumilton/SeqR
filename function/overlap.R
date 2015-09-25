@@ -69,3 +69,31 @@ drawHeatmap <- function(data, genes, xmar = 5, ymar = 5, title = "",
   dev.off()
   
 }
+
+
+splitUPDN <- function(data, direc = "both") {
+  
+  if(!is.null(data)) {
+    
+    fc <- data[,grep("log", colnames(data))[1]]
+    
+    if (direc == "both") {
+      return (data$GeneID)
+    }
+    
+    else if (direc == "up") {
+      return (data$GeneID[fc > 0])
+    }
+    
+    else if (direc == "dn") {
+      return (data$GeneID[fc < 0])
+    }
+    else return(NULL)
+    
+  }
+  
+  
+  
+  
+}
+

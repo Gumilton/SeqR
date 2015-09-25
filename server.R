@@ -12,10 +12,7 @@ library(dendextend)
 
 shinyServer(function(input, output) {
   
-  output$DAVID_ui <- renderUI({
-    tags$a(href = "#", "DAVID")
-  })
-  
+
   observeEvent(input$dataIn, {
     
     source("./server/dataIn_server.R", local=TRUE)
@@ -97,24 +94,81 @@ shinyServer(function(input, output) {
       
     })
     
+    
+    output$DAVID_up <- renderUI({
+      tags$a(href = "#", "DAVID")
+    })
+    
+    output$DAVID_dn <- renderUI({
+      tags$a(href = "#", "DAVID")
+    })
+    
+    output$DAVID_both <- renderUI({
+      tags$a(href = "#", "DAVID")
+    })
+    
+    
    
     
     observeEvent(input$goAnalyze, {
       
-      observeEvent(input$goEnrichr, {
+      observeEvent(input$Enrichr_both, {
         
-        genes <- paste(intersect_table()$GeneID, collapse = "\n")
+        genes <- paste(splitUPDN(intersect_table(),"both"), collapse = "\n")
+        js$enrichr(list = genes)
+        
+      })      
+      observeEvent(input$Enrichr_up, {
+        
+        genes <- paste(splitUPDN(intersect_table(),"up"), collapse = "\n")
+        js$enrichr(list = genes)
+        
+      })      
+      observeEvent(input$Enrichr_dn, {
+        
+        genes <- paste(splitUPDN(intersect_table(),"dn"), collapse = "\n")
         js$enrichr(list = genes)
         
       })
       
-      output$DAVID_ui <- renderUI({
+      output$DAVID_up <- renderUI({
         
-        genes <- paste(intersect_table()$GeneID, collapse = ",")
+        genes <- paste(splitUPDN(intersect_table(),"up"), collapse = ",")
+        
+        link <- paste0("http://david.abcc.ncifcrf.gov/api.jsp?type=",
+                       input$david_type, "&ids=",genes,"&tool=summary")
+        if(nchar(link) < 2048 & length(strsplit(x = genes, split = ",")) < 400) {
+          tags$a(href = link, "DAVID for UP", target = "_blank")
+        }
+        else {tags$a(href = "#", "Too Many Genes to Perform")}
+        
+      })
+      
+      
+      output$DAVID_dn <- renderUI({
+        
+        genes <- paste(splitUPDN(intersect_table(),"dn"), collapse = ",")
         link <- paste0("http://david.abcc.ncifcrf.gov/api.jsp?type=",
                        input$david_type, "&ids=",genes,"&tool=summary")
         
-        tags$a(href = link, "DAVID", target = "_blank")
+        if(nchar(link) < 2048 & length(strsplit(x = genes, split = ",")) < 400) {
+          tags$a(href = link, "DAVID for Down", target = "_blank")
+        }
+        else {tags$a(href = "#", "Too Many Genes to Perform")}
+        
+      })
+      
+      
+      output$DAVID_both <- renderUI({
+        
+        genes <- paste(splitUPDN(intersect_table(),"both"), collapse = ",")
+        link <- paste0("http://david.abcc.ncifcrf.gov/api.jsp?type=",
+                       input$david_type, "&ids=",genes,"&tool=summary")
+        
+        if(nchar(link) < 2048 & length(strsplit(x = genes, split = ",")) < 400) {
+          tags$a(href = link, "DAVID for Both", target = "_blank")
+        }
+        else {tags$a(href = "#", "Too Many Genes to Perform")}
       })
       
     })

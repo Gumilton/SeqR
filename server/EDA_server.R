@@ -12,9 +12,11 @@ svd_data <- reactive({
 })
 
 
-output$PCAPlot_factor <- renderPlot(PCAPlot_factor(svd_data()))
+output$PCAPlot_factor <- renderPlot(PCAPlot_factor(svd_data()), 
+                                    width = 500, height = 500)
 
-output$PCAPlot_pca <- renderPlot(PCAPlot_pca(dat(), svd_data(), controls()))
+output$PCAPlot_pca <- renderPlot(PCAPlot_pca(dat(), svd_data(), controls()), 
+                                 width = 500, height = 500)
 
 output$PCA_click_info <- renderPrint({
   # this was a base graphics plot, we'd need to supply xvar or yvar
