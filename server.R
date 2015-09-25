@@ -1,5 +1,5 @@
 library(shiny)
-library(xlsx)
+# library(xlsx)
 source("./function/EDA.R")
 source("./function/limma.R")
 source("./function/deseq.R")
@@ -7,6 +7,8 @@ source("./function/deseq2.R")
 source("./function/overlap.R")
 library(shinyjs)
 library(V8)
+library(scales)
+library(dendextend)
 
 shinyServer(function(input, output) {
   
@@ -42,8 +44,22 @@ shinyServer(function(input, output) {
     
     observeEvent(input$showRes, {
       source("./server/overlap_server.R", local=TRUE)
-      output$figure_UP <- renderPlot(drawVenn(res_list()$up))
-      output$figure_DN <- renderPlot(drawVenn(res_list()$dn))
+      output$figure_UP <- renderPlot(drawVenn(res_list()$up, 
+                                              title = "Overlap of UP Regulated Genes"),
+                                     width = 300, height = 300)
+      output$figure_DN <- renderPlot(drawVenn(res_list()$dn, 
+                                              title = "Overlap of DOWN Regulated Genes"),
+                                     width = 300, height = 300)
+      observeEvent(input$showHeatmap, {
+        
+        output$de_heatmap <- renderPlot(drawHeatmap(data = dat(), genes = res_list(),
+                                                    xmar = input$xmar, ymar = input$ymar,
+                                                    title = input$heat_title, 
+                                                    ksample  = input$heat_NoSampleCl, 
+                                                    kgene = input$heat_NoGeneCl, 
+                                                    unsupre = input$heat_unsup),
+                                        width = input$heat_x, height = input$heat_y)
+      })
       
       
       # methods <- reactive(as.character(input$methods))

@@ -3,7 +3,13 @@ library(shiny)
 library(shinyjs)
 library(V8)
 
-source('./ui/panelSets_ui.R', local=TRUE)
+source('./ui/seq/input_ui.R', local=TRUE)
+source('./ui/seq/eda_ui.R', local=TRUE)
+source('./ui/seq/analysis_ui.R', local=TRUE)
+source('./ui/seq/overlap_ui.R', local=TRUE)
+source('./ui/seq/function_ui.R', local=TRUE)
+
+
 
 shinyUI(navbarPage("SeqR!",
                    tabPanel("RNAseq",

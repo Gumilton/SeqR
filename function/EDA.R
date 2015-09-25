@@ -62,7 +62,6 @@ PCAPlot_factor <- function( svd_data) {
 
 PCAPlot_pca <- function( data, svd_data, controls) {
   
-  library(scales)
   
   if(length(controls) != 0) {
     colors = alpha(ifelse(colnames(data) %in% controls,"red","blue"), .5)
@@ -105,10 +104,20 @@ libSizePlot <- function(data) {
           main= paste("Library Size", suffix))
 }
 
-clusterPlot <- function(data, filter) {
+clusterPlot <- function(data, filter, controls) {
   
+  temp <- data[filter,]
   
+  hr <- as.dendrogram(hclust(as.dist(1-cor(temp, method="pearson")), method="complete"))
   
+  if(length(controls) != 0) {
+    colors = alpha(ifelse(colnames(data) %in% controls,"red","blue"), .5)
+  }
+  else {colors = "black"}
+  
+  labels_colors(hr) = colors
+  
+  plot(hr)
 }
 
 

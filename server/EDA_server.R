@@ -1,8 +1,5 @@
-output$densityPlot <- renderPlot({
-  
-  DensityPlot(dat(), cutoff = input$cutoff)
-  
-})
+output$densityPlot <- renderPlot(DensityPlot(dat(), cutoff = input$cutoff),
+                                 width = 400, height = 400)
 
 filter <- reactive({
   geneMeans <- rowMeans(dat())
@@ -36,4 +33,4 @@ output$PCA_brush_info <- renderPrint({
 
 output$LibSizePlot <- renderPlot(libSizePlot(dat()))
 
-output$rawClusterPlot <- renderPlot(clusterPlot(dat(), filter()))
+output$rawClusterPlot <- renderPlot(clusterPlot(dat(), filter(), controls()))
